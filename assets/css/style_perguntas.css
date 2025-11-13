@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    background-color: #e6f0f5;
+    width: 250px;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo {
+    width: 80px;
+}
+
+.form-area {
+    flex: 1;
+    padding: 30px;
+}
+
+input, select, textarea {
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #00457c;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.top-inputs input {
+    display: inline-block;
+    width: 30%;
+    margin-right: 2%;
+}

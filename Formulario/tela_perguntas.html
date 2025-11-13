@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesquisa de Satisfação - Volkswagen Capivari</title>
+    <link rel="stylesheet" href="assets/css/survey-style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const progressBar = document.querySelector('.progress-bar');
+            const submitButton = document.querySelector('button[type="submit"]');
+            const emailInput = document.querySelector('input[name="email"]');
+            const dateInput = document.querySelector('input[name="date"]');
+            const plateInput = document.querySelector('input[name="plate"]');
+            const consultantInput = document.querySelector('input[name="consultant"]');
+            const reasonSelect = document.querySelector('select[name="reason"]');
+            const resolvedRadios = document.querySelectorAll('input[name="resolved"]');
+            const unresolvedReason = document.querySelector('input[name="unresolved_reason"]');
+            const suggestions = document.querySelector('textarea[name="suggestions"]');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            form.insertBefore(errorDiv, form.firstChild);
+
+            // Função para calcular progresso
+            function updateProgress() {
+                const requiredFields = [
+                    dateInput.value,
+                    plateInput.value,
+                    consultantInput.value,
+                    reasonSelect.value,
+                    resolvedRadios[0].checked || resolvedRadios[1].checked
+                ];
+                const filledFields = requiredFields.filter(field => field).length;
+                const progress = (filledFields / requiredFields.length) * 100;
+                progressBar.style.width = progress + '%';
+            }
+
+            // Validar e-mail
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            // Validar placa
+            function validatePlate(plate) {
+                const re = /^[A-Z]{3}-?\d{4}$/;
+                return re.test(plate.toUpperCase());
+            }
+
+            // Adicionar evento de atualização de progresso
+            form.addEventListener('input', updateProgress);
+
+            // Validar formulário antes do envio
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                errorDiv.textContent = '';
+
+                // Validar e-mail
+                if (emailInput.value && !validateEmail(emailInput.value)) {
+                    errorDiv.textContent += 'E-mail inválido.\n';
+                    isValid = false;
+                }
+
+                // Validar placa
+                if (!validatePlate(plateInput.value)) {
+                    errorDiv.textContent += 'Placa inválida. Use o formato XXX-XXXX.\n';
+                    isValid = false;
+                }
+
+                // Validar campo de problemas não resolvidos quando selecionado "Não"
+                if (resolvedRadios[1].checked && !unresolvedReason.value.trim()) {
+                    errorDiv.textContent += 'Por favor, descreva os problemas não resolvidos.\n';
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    errorDiv.style.display = 'block';
+                }
+            });
+
+            // Atualizar progresso inicial
+            updateProgress();
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="assets/img/logo-capivari-automoiveis-site-novo_.png" alt="Logo Volkswagen Capivari" class="logo">
+            <h2>Volkswagen Capivari</h2>
+            <p>Pesquisa de<br>Satisfação</p>
+        </div>
+        <div class="form-area">
+            <form action="/submit" method="post" id="survey-form">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="form-section">
+                    <h3>Dados do Cliente</h3>
+                    <div class="top-inputs">
+                        <input type="date" name="date" required placeholder="Data do Atendimento">
+                        <input type="text" name="plate" placeholder="Placa do Veículo" required pattern="[A-Z]{3}-?\d{4}" title="Formato: XXX-XXXX">
+                        <input type="text" name="consultant" placeholder="Consultor que realizou o atendimento" required>
+                        <input type="email" name="email" placeholder="E-mail (opcional)" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Perguntas sobre o Atendimento</h3>
+                    <p>Estamos dispostos a sempre aprimorar nosso atendimento...</p>
+
+                    <div class="question-group">
+                        <label>1 - Qual foi o motivo da sua vinda até a nossa loja?</label><br>
+                        <select name="reason" required>
+                            <option value="">Selecione...</option>
+                            <option value="Garantia">Garantia</option>
+                            <option value="Manutenção programada">Manutenção programada</option>
+                            <option value="Manutenção sem garantia">Manutenção/Reparo sem garantia</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="question-group">
+                        <label>2 - Todos os problemas ou dúvidas foram corrigidos/sanados?</label><br>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="resolved" value="Sim" required> Sim
+                            </label>
+                            <label>
+                                <input type="radio" name="resolved" value="Não"> Não
+                            </label>
+                        </div>
+                        <div class="unresolved-section">
+                            <input type="text" name="unresolved_reason" placeholder="Descreva o que não foi feito">
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <label>3 - Qual a probabilidade de você voltar a utilizar nossos serviços?</label><br>
+                        <select name="probability" required>
+                            <option value="">Selecione...</option>
+                            <option value="100">100% - Com certeza voltarei</option>
+                            <option value="75">75% - Provavelmente voltarei</option>
+                            <option value="50">50% - Talvez</option>
+                            <option value="25">25% - Pouca chance</option>
+                            <option value="0">0% - Não voltarei</option>
+                        </select>
+                    </div>
+
+                    <div class="question-group">
+                        <label>4 - Alguma sugestão para melhorarmos?</label><br>
+                        <textarea name="suggestions" rows="4" placeholder="Descreva em poucas palavras" required></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">Enviar Resposta</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .error-message {
+            display: none;
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #1a73e8;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-section h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .question-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .unresolved-section {
+            margin-top: 0.5rem;
+        }
+
+        .submit-button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</body>
+</html>
+

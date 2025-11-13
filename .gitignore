@@ -1,0 +1,22 @@
+# Ambientes Virtuais
+venv/
+.venv/
+
+# Arquivos de Dependências e Instaladores
+Depdendencias/
+
+# Banco de dados e arquivos de instância
+instance/
+*.db
+
+# Arquivos temporários e de cache
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# Arquivos temporários do Excel
+temp_*.xlsx
+
+# Arquivos de configuração de IDE
+.vscode/
+.idea/

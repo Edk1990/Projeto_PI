@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Dashboard Administrativo</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-image">
+            <img src="assets/img/logo-capivari-automoiveis-site-novo_.png" alt="Logo Capivari Automóveis">
+        </div>
+        <div class="welcome-container">
+            <div class="welcome-content">
+                <h1>Dashboard Administrativo</h1>
+                
+                <div class="admin-dashboard">
+                    <div class="dashboard-header">
+                        <h2>Respostas da Pesquisa de Satisfação</h2>
+                        <button class="logout-btn">Sair</button>
+                    </div>
+                    
+                    <div class="survey-stats">
+                        <div class="stat-card">
+                            <h3>Total de Respostas</h3>
+                            <p id="totalResponses">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Média de Satisfação</h3>
+                            <p id="satisfactionAvg">0%</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Última Resposta</h3>
+                            <p id="lastResponse">Nenhuma resposta registrada</p>
+                        </div>
+                    </div>
+                    
+                    <div class="survey-results">
+                        <div class="filters">
+                            <label for="dateRange">Período:</label>
+                            <input type="date" id="startDate">
+                            <input type="date" id="endDate">
+                            <button class="filter-btn">Filtrar</button>
+                        </div>
+                        
+                        <div class="results-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Satisfação</th>
+                                        <th>Detalhes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responsesTable">
+                                    <!-- Respostas serão inseridas aqui via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Protege a rota
+        protectRoute();
+
+        // Função para fazer logout
+        document.querySelector('.logout-btn').addEventListener('click', logout);
+
+        // Simulação de dados (em um sistema real, isso viria de um backend)
+        const mockResponses = [
+            {
+                id: 1,
+                name: "João Silva",
+                email: "joao@email.com",
+                date: "2025-05-24",
+                satisfaction: 4,
+                comments: "Ótimo atendimento!"
+            }
+        ];
+
+        // Função para popular a tabela
+        function populateTable() {
+            const tableBody = document.getElementById('responsesTable');
+            let html = '';
+            
+            mockResponses.forEach(response => {
+                html += `
+                    <tr>
+                        <td>${response.date}</td>
+                        <td>${response.name}</td>
+                        <td>${response.email}</td>
+                        <td>${response.satisfaction}/5</td>
+                        <td>
+                            <button class="view-details-btn" onclick="showDetails(${response.id})">
+                                Ver Detalhes
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+            
+            // Atualizar estatísticas
+            document.getElementById('totalResponses').textContent = mockResponses.length;
+            // Aqui você pode calcular a média real
+            document.getElementById('satisfactionAvg').textContent = '90%';
+            document.getElementById('lastResponse').textContent = mockResponses[0].date;
+        }
+
+        // Função para mostrar detalhes
+        function showDetails(responseId) {
+            const response = mockResponses.find(r => r.id === responseId);
+            // Aqui você pode implementar a lógica para mostrar os detalhes completas
+            alert(`Detalhes da resposta #${responseId}:
+
+${response.comments}`);
+        }
+
+        // Inicializar a tabela quando a página carregar
+        document.addEventListener('DOMContentLoaded', populateTable);
+    </script>
+            window.location.href = 'tela_login_admin.html';
+        });
+    </script>
+</body>
+</html>

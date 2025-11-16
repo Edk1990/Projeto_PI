@@ -325,6 +325,46 @@ def api_v1_export_csv():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/admin/db-info', methods=['GET'])
+def db_info():
+    """Endpoint de diagnóstico do banco de dados"""
+    try:
+        # Verificar conexão e tabelas
+        from sqlalchemy import inspect, text
+        
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
+        
+        # Informações da conexão
+        connection_info = {
+            'database_url_prefix': app.config['SQLALCHEMY_DATABASE_URI'][:20] + '...',
+            'dialect': db.engine.dialect.name,
+            'tables': tables,
+            'table_count': len(tables)
+        }
+        
+        # Se a tabela resposta existir, contar registros
+        if 'resposta' in tables:
+            with db.engine.connect() as conn:
+                result = conn.execute(text('SELECT COUNT(*) FROM resposta'))
+                count = result.scalar()
+                connection_info['resposta_count'] = count
+                
+                # Pegar estrutura da tabela
+                columns = inspector.get_columns('resposta')
+                connection_info['resposta_columns'] = [col['name'] for col in columns]
+        
+        return jsonify({
+            'success': True,
+            'data': connection_info
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory('.', path)

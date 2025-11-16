@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login administrativo - Volkswagen Capivari. Acesso restrito a administradores.">
+    <title>Login Administrador - Volkswagen Capivari</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/accessibility.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Área de branding -->
+        <aside class="form-image" role="complementary" aria-label="Logotipo da empresa">
+            <img src="assets/img/logo-capivari-automoiveis-site-novo_.png" 
+                 alt="Logotipo Capivari Automóveis - Volkswagen"
+                 role="img">
+        </aside>
+        
+        <!-- Área de login -->
+        <main class="welcome-container" id="main-content" role="main">
+            <section class="welcome-content" aria-labelledby="login-title">
+                <h1 id="login-title">Área Administrativa</h1>
+                <p role="doc-subtitle">Acesse o sistema para visualizar as respostas da pesquisa de satisfação</p>
+                
+                <form id="adminLoginForm" 
+                      class="admin-form"
+                      role="form"
+                      aria-labelledby="login-title"
+                      novalidate>
+                    <div class="input-box">
+                        <label for="adminEmail">E-mail</label>
+                        <input type="email" 
+                               id="adminEmail" 
+                               name="email" 
+                               required
+                               aria-required="true"
+                               aria-label="Digite seu e-mail de administrador"
+                               autocomplete="username">
+                    </div>
+                    
+                    <div class="input-box">
+                        <label for="adminPassword">Senha</label>
+                        <input type="password" 
+                               id="adminPassword" 
+                               name="password" 
+                               required
+                               aria-required="true"
+                               aria-label="Digite sua senha"
+                               autocomplete="current-password">
+                    </div>
+                    
+                    <!-- Botões de ação -->
+                    <div class="form-actions" role="group" aria-label="Ações do formulário">
+                        <button type="submit" 
+                                class="submit-btn"
+                                aria-label="Entrar no painel administrativo">Entrar</button>
+                        <nav aria-label="Navegação secundária">
+                            <a href="tela__login.html" 
+                               class="back-link"
+                               aria-label="Voltar para página inicial">Voltar para o início</a>
+                        </nav>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('adminLoginForm');
+            if (form) {
+                // Criar área de mensagens de erro acessível
+                const errorContainer = document.createElement('div');
+                errorContainer.id = 'login-errors';
+                errorContainer.setAttribute('role', 'alert');
+                errorContainer.setAttribute('aria-live', 'assertive');
+                errorContainer.setAttribute('aria-atomic', 'true');
+                errorContainer.style.cssText = 'color: #dc3545; margin: 1rem 0; display: none;';
+                form.insertBefore(errorContainer, form.firstChild);
+                
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('adminEmail').value;
+                    const password = document.getElementById('adminPassword').value;
+                    
+                    // Limpar mensagens anteriores
+                    errorContainer.style.display = 'none';
+                    errorContainer.textContent = '';
+                    
+                    try {
+                        const response = await fetch('/admin/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ email, password })
+                        });
+
+                        if (response.ok) {
+                            // Anunciar sucesso
+                            if (window.AccessibilityModule) {
+                                window.AccessibilityModule.announceToScreenReader('Login realizado com sucesso. Redirecionando...');
+                            }
+                            window.location.href = 'dashboard_admin.html';
+                        } else {
+                            const error = await response.json();
+                            const errorMessage = error.message || 'Credenciais inválidas. Tente novamente.';
+                            errorContainer.textContent = errorMessage;
+                            errorContainer.style.display = 'block';
+                            
+                            // Focar no primeiro campo para recomeçar
+                            document.getElementById('adminEmail').focus();
+                        }
+                    } catch (error) {
+                        console.error('Erro na requisição:', error);
+                        const errorMessage = 'Erro ao tentar fazer login. Por favor, tente novamente.';
+                        errorContainer.textContent = errorMessage;
+                        errorContainer.style.display = 'block';
+                    }
+                });
+            } else {
+                console.error('Formulário não encontrado');
+            }
+        });
+    </script>
+    
+    <!-- Script de acessibilidade -->
+    <script src="assets/js/accessibility.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# Ambiente Virtual Python
+venv/
+.venv/
+env/
+ENV/
+
+# Banco de dados
+*.db
+instance/
+
+# Arquivos temporários
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos Excel temporários
+temp_*.xlsx
+~$*.xlsx
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Dependências backup
+Depdendencias/
+Formulario/
+
+# Variáveis de ambiente
+.env
+.env.local

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Obrigado por participar da pesquisa de satisfação Volkswagen Capivari.">
+    <title>Obrigado! - Pesquisa de Satisfação</title>
+    <link rel="stylesheet" href="assets/css/accessibility.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .icon {
+            font-size: 4em;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de confirmação -->
+    <main class="container" id="main-content" role="main">
+        <div class="icon" role="img" aria-label="Ícone de sucesso">✓</div>
+        <h1 id="thank-you-title">Obrigado pela sua resposta!</h1>
+        <p role="doc-subtitle">Sua participação é muito importante para nós. Agradecemos o seu tempo e colaboração.</p>
+        <nav aria-label="Navegação">
+            <a href="tela__login.html" 
+               class="button"
+               role="button"
+               aria-label="Voltar para página inicial">Voltar ao início</a>
+        </nav>
+    </main>
+    
+    <!-- Script de acessibilidade -->
+    <script src="assets/js/accessibility.js"></script>
+    <script>
+        // Anunciar sucesso para leitores de tela
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.AccessibilityModule) {
+                window.AccessibilityModule.announceToScreenReader(
+                    'Pesquisa enviada com sucesso. Obrigado pela sua participação!'
+                );
+            }
+        });
+    </script>
+</body>
+</html>

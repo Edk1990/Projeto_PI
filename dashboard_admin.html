@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard administrativo - Visualize e gerencie respostas da pesquisa de satisfação Volkswagen Capivari.">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/accessibility.css">
+    <title>Dashboard Administrativo - Volkswagen Capivari</title>
+</head>
+<body>
+    <!-- Área principal do dashboard -->
+    <main class="dashboard-content" id="main-content" role="main">
+        <!-- Menu de navegação -->
+        <nav class="nav-menu" role="navigation" aria-label="Navegação principal">
+            <h2 id="dashboard-title">Dashboard de Respostas</h2>
+            <div>
+                <button onclick="goBack()" 
+                        aria-label="Voltar ao menu de login">Voltar ao Menu</button>
+            </div>
+        </nav>
+
+        <!-- Cabeçalho de boas-vindas -->
+        <header class="welcome-content" role="banner">
+            <h1>Bem-vindo ao Dashboard Administrativo</h1>
+            <p>Visualize e gerencie as respostas da pesquisa de satisfação</p>
+        </header>
+
+        <!-- Cartões de estatísticas -->
+        <section class="stat-cards" role="region" aria-labelledby="statistics-heading">
+            <h2 id="statistics-heading" class="sr-only">Estatísticas da Pesquisa</h2>
+            
+            <article class="stat-card" role="article" aria-labelledby="total-heading">
+                <h3 id="total-heading">Total de Respostas</h3>
+                <p id="totalResponses" aria-live="polite" aria-atomic="true">0</p>
+            </article>
+            
+            <article class="stat-card" role="article" aria-labelledby="satisfaction-heading">
+                <h3 id="satisfaction-heading">Média de Satisfação</h3>
+                <p id="satisfactionAvg" aria-live="polite" aria-atomic="true">0%</p>
+            </article>
+            
+            <article class="stat-card" role="article" aria-labelledby="last-response-heading">
+                <h3 id="last-response-heading">Última Resposta</h3>
+                <p id="lastResponse" aria-live="polite" aria-atomic="true">Nenhuma resposta registrada</p>
+            </article>
+        </section>
+
+        <!-- Filtros de pesquisa -->
+        <section class="filters" role="search" aria-labelledby="filter-heading">
+            <h2 id="filter-heading" class="sr-only">Filtros de Pesquisa</h2>
+            <form role="form" aria-label="Filtrar resultados por período">
+                <label for="startDate">Período - Data inicial:</label>
+                <input type="date" 
+                       id="startDate"
+                       aria-label="Data de início do período">
+                
+                <label for="endDate" class="sr-only">Data final do período:</label>
+                <input type="date" 
+                       id="endDate"
+                       aria-label="Data de fim do período">
+                
+                <button class="filter-btn" 
+                        type="button"
+                        aria-label="Aplicar filtro de datas">Filtrar</button>
+            </form>
+        </section>
+
+        <!-- Tabela de resultados -->
+        <section class="results-table" role="region" aria-labelledby="table-heading">
+            <h2 id="table-heading" class="sr-only">Tabela de Respostas da Pesquisa</h2>
+            <div class="results-table-wrapper">
+                <table class="results-table" 
+                       role="table"
+                       aria-label="Respostas da pesquisa de satisfação"
+                       aria-describedby="table-description">
+                    <caption id="table-description" class="sr-only">
+                        Tabela ordenada de respostas da pesquisa. Clique nos cabeçalhos para ordenar.
+                    </caption>
+                    <thead>
+                        <tr role="row">
+                            <th role="columnheader" 
+                                data-sort="id" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="ID - Clique para ordenar">ID</th>
+                            <th role="columnheader" 
+                                data-sort="data_resposta" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Data Resposta - Clique para ordenar">Data Resposta</th>
+                            <th role="columnheader" 
+                                data-sort="data_visita" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Data Visita - Clique para ordenar">Data Visita</th>
+                            <th role="columnheader" 
+                                data-sort="placa" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Placa - Clique para ordenar">Placa</th>
+                            <th role="columnheader" 
+                                data-sort="consultor" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Consultor - Clique para ordenar">Consultor</th>
+                            <th role="columnheader" 
+                                data-sort="motivo_visita" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Motivo Visita - Clique para ordenar">Motivo Visita</th>
+                            <th role="columnheader" 
+                                data-sort="probability" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Probabilidade de Retorno - Clique para ordenar">Probabilidade de Retorno</th>
+                            <th role="columnheader" 
+                                data-sort="problema_resolvido" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Problema Resolvido - Clique para ordenar">Problema Resolvido</th>
+                            <th role="columnheader" 
+                                data-sort="problema_nao_resolvido" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Problema Não Resolvido - Clique para ordenar">Problema Não Resolvido</th>
+                            <th role="columnheader" 
+                                data-sort="email" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="E-mail - Clique para ordenar">E-mail</th>
+                            <th role="columnheader" 
+                                data-sort="sugestoes" 
+                                tabindex="0"
+                                aria-sort="none"
+                                aria-label="Sugestões - Clique para ordenar">Sugestões</th>
+                        </tr>
+                    </thead>
+                    <tbody id="responsesTable" role="rowgroup">
+                        <!-- Respostas serão inseridas aqui via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Controles de paginação -->
+        <nav class="pagination" 
+             role="navigation" 
+             aria-label="Paginação da tabela">
+            <button onclick="changePage('prev')" 
+                    aria-label="Página anterior">Anterior</button>
+            <span id="pageInfo" 
+                  role="status" 
+                  aria-live="polite" 
+                  aria-atomic="true"></span>
+            <button onclick="changePage('next')" 
+                    aria-label="Próxima página">Próximo</button>
+        </nav>
+
+        <!-- Mensagem quando não há respostas -->
+        <div id="no-responses" 
+             class="no-responses"
+             role="status"
+             aria-live="polite"
+             aria-atomic="true">
+            Carregando respostas...
+        </div>
+    </main>
+
+    <script>
+        // Configurações de paginação
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let currentSort = { field: 'id', direction: 'asc' };
+        let allData = [];
+
+        // Função para calcular média de satisfação
+        function calcularMediaSatisfacao(respostas) {
+            if (!respostas || respostas.length === 0) return 0;
+            
+            let soma = 0;
+            let totalValido = 0;
+            
+            respostas.forEach(resposta => {
+                // Usa o campo probability do formulário
+                if (resposta.probability !== undefined && !isNaN(resposta.probability)) {
+                    soma += parseInt(resposta.probability);
+                    totalValido++;
+                }
+            });
+            
+            if (totalValido === 0) return 0;
+            
+            // Calcula a média já em porcentagem (0-100%)
+            const media = (soma / totalValido).toFixed(1);
+            return Math.min(Math.max(0, media), 100);
+        }
+
+        // Função para formatar data
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleString('pt-BR');
+        }
+
+        // Função para ordenar dados
+        function sortData(field, direction) {
+            currentSort = { field, direction };
+            const sortedData = [...allData];
+            
+            if (field === 'probability') {
+                sortedData.sort((a, b) => {
+                    const valA = parseInt(a.probability || 0);
+                    const valB = parseInt(b.probability || 0);
+                    return direction === 'asc' ? valA - valB : valB - valA;
+                });
+            } else {
+                sortedData.sort((a, b) => {
+                    const valA = a[field]?.toLowerCase() || '';
+                    const valB = b[field]?.toLowerCase() || '';
+                    return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                });
+            }
+            
+            allData = sortedData;
+            updateTable();
+        }
+
+        // Função para atualizar a tabela
+        function updateTable() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentData = allData.slice(startIndex, endIndex);
+            
+            const tableBody = document.getElementById('responsesTable');
+            let html = '';
+            
+            currentData.forEach(response => {
+                html += `
+                    <tr>
+                        <td>${response.id}</td>
+                        <td>${formatDate(response.data_resposta)}</td>
+                        <td>${formatDate(response.data_visita)}</td>
+                        <td>${response.placa}</td>
+                        <td>${response.consultor}</td>
+                        <td>${response.motivo_visita}</td>
+                        <td>${response.probability || '0%'}</td>
+                        <td>${response.problema_resolvido ? 'Sim' : 'Não'}</td>
+                        <td>${response.problema_nao_resolvido ? 'Sim' : 'Não'}</td>
+                        <td>${response.email}</td>
+                        <td>${response.sugestoes}</td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+            updatePagination();
+        }
+
+        // Função para atualizar paginação
+        function updatePagination() {
+            const totalPages = Math.ceil(allData.length / itemsPerPage);
+            const pageInfo = document.getElementById('pageInfo');
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+            
+            const prevBtn = document.querySelector('.pagination button:first-child');
+            const nextBtn = document.querySelector('.pagination button:last-child');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        // Função para mudar página
+        function changePage(direction) {
+            if (direction === 'prev' && currentPage > 1) {
+                currentPage--;
+            } else if (direction === 'next' && currentPage < Math.ceil(allData.length / itemsPerPage)) {
+                currentPage++;
+            }
+            updateTable();
+        }
+
+        // Carregar respostas do servidor
+        async function loadResponses() {
+            try {
+                const response = await fetch('/admin/respostas');
+                allData = await response.json();
+                console.log('Dados recebidos:', allData); // Debug para ver a estrutura dos dados
+                
+                if (allData.length > 0) {
+                    document.getElementById('no-responses').style.display = 'none';
+                    
+                    // Atualizar total de respostas
+                    document.getElementById('totalResponses').textContent = `Total de Respostas: ${allData.length}`;
+                    
+                    // Calcular e atualizar média de satisfação
+                    const media = calcularMediaSatisfacao(allData);
+                    console.log('Média calculada:', media); // Debug para ver o valor calculada
+                    document.getElementById('satisfactionAvg').textContent = `${media}%`;
+                    
+                    // Atualizar última resposta
+                    const ultimaResposta = allData[allData.length - 1];
+                    if (ultimaResposta) {
+                        const date = new Date(ultimaResposta.data_resposta);
+                        const formattedDate = date.toLocaleString('pt-BR');
+                        document.getElementById('lastResponse').textContent = `Última Resposta: ${formattedDate}`;
+                    }
+                    
+                    currentPage = 1;
+                    updateTable();
+                } else {
+                    document.getElementById('no-responses').textContent = 'Nenhuma resposta encontrada.';
+                    document.getElementById('totalResponses').textContent = 'Total de Respostas: 0';
+                    document.getElementById('satisfactionAvg').textContent = '0%';
+                    document.getElementById('lastResponse').textContent = 'Nenhuma resposta registrada';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar respostas:', error);
+                document.getElementById('no-responses').textContent = 'Erro ao carregar as respostas. Por favor, tente novamente.';
+                document.getElementById('totalResponses').textContent = 'Erro ao carregar dados';
+                document.getElementById('satisfactionAvg').textContent = 'Erro ao carregar dados';
+                document.getElementById('lastResponse').textContent = 'Erro ao carregar dados';
+            }
+        }
+
+        // Função para voltar
+        function goBack() {
+            window.location.href = 'tela_login_admin.html';
+        }
+
+        // Configurar filtro
+        const filterBtn = document.querySelector('.filter-btn');
+        if (filterBtn) {
+            filterBtn.addEventListener('click', loadResponses);
+        }
+
+        // Configurar ordenação
+        document.querySelectorAll('th[data-sort]').forEach(th => {
+            th.addEventListener('click', () => {
+                const field = th.dataset.sort;
+                if (currentSort.field === field) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.field = field;
+                    currentSort.direction = 'asc';
+                }
+                sortData(field, currentSort.direction);
+                
+                // Atualizar ordenação e aria-sort
+                document.querySelectorAll('th[data-sort]').forEach(th => {
+                    th.classList.remove('asc', 'desc');
+                    th.setAttribute('aria-sort', 'none');
+                });
+                th.classList.add(currentSort.direction);
+                th.setAttribute('aria-sort', currentSort.direction === 'asc' ? 'ascending' : 'descending');
+                
+                // Anunciar mudança
+                if (window.AccessibilityModule) {
+                    window.AccessibilityModule.announceToScreenReader(
+                        `Tabela ordenada por ${field} em ordem ${currentSort.direction === 'asc' ? 'crescente' : 'decrescente'}`
+                    );
+                }
+            });
+        });
+
+        // Carregar respostas quando a página carregar
+        document.addEventListener('DOMContentLoaded', loadResponses);
+    </script>
+    
+    <!-- Script de acessibilidade -->
+    <script src="assets/js/accessibility.js"></script>
+</body>
+</html>

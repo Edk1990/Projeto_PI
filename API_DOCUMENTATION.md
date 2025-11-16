@@ -184,21 +184,20 @@ GET /api/v1/estatisticas
 
 ---
 
-### 5. **Exportar para Excel**
-Gera e baixa um arquivo Excel com todas as respostas.
+### 5. **Exportar para CSV**
+Gera e baixa um arquivo CSV com todas as respostas.
 
-**Endpoint:** `GET /api/v1/export/excel`
+**Endpoint:** `GET /api/v1/export/csv`
 
 **Exemplo de Request:**
 ```bash
-GET /api/v1/export/excel
+GET /api/v1/export/csv
 ```
 
 **Response:**
-- **Content-Type:** `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
-- **Content-Disposition:** `attachment; filename=pesquisa_satisfacao_YYYYMMDD_HHMMSS.xlsx`
+- Arquivo CSV (.csv) para download
 
-**Arquivo Excel Contém:**
+**Arquivo CSV Contém:**
 - ID
 - Email
 - Data Visita
@@ -257,9 +256,9 @@ curl -X GET http://localhost:5000/api/v1/estatisticas
 curl -X DELETE http://localhost:5000/api/v1/respostas/1
 ```
 
-**Baixar Excel:**
+**Baixar CSV:**
 ```bash
-curl -X GET http://localhost:5000/api/v1/export/excel -o relatorio.xlsx
+curl -X GET http://localhost:5000/api/v1/export/csv -o relatorio.csv
 ```
 
 ### Usando JavaScript (Fetch API)
@@ -282,14 +281,14 @@ fetch('http://localhost:5000/api/v1/respostas/1', {
   .then(response => response.json())
   .then(data => console.log(data));
 
-// Download Excel
-fetch('http://localhost:5000/api/v1/export/excel')
+// Download CSV
+fetch('http://localhost:5000/api/v1/export/csv')
   .then(response => response.blob())
   .then(blob => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'relatorio.xlsx';
+    a.download = 'relatorio.csv';
     a.click();
   });
 ```
@@ -311,9 +310,9 @@ print(response.json())
 response = requests.delete('http://localhost:5000/api/v1/respostas/1')
 print(response.json())
 
-# Download Excel
-response = requests.get('http://localhost:5000/api/v1/export/excel')
-with open('relatorio.xlsx', 'wb') as f:
+# Download CSV
+response = requests.get('http://localhost:5000/api/v1/export/csv')
+with open('relatorio.csv', 'wb') as f:
     f.write(response.content)
 ```
 
@@ -329,7 +328,7 @@ python app.py
 2. **Testar no navegador:**
 - Estatísticas: http://localhost:5000/api/v1/estatisticas
 - Listar todas: http://localhost:5000/api/v1/respostas
-- Exportar Excel: http://localhost:5000/api/v1/export/excel
+- Exportar CSV: http://localhost:5000/api/v1/export/csv
 
 3. **Testar com Postman/Insomnia:**
 - Importe os endpoints acima
@@ -361,6 +360,6 @@ python app.py
 - ✅ Endpoint GET /api/v1/respostas/{id}
 - ✅ Endpoint DELETE /api/v1/respostas/{id}
 - ✅ Endpoint GET /api/v1/estatisticas
-- ✅ Endpoint GET /api/v1/export/excel
+- ✅ Endpoint GET /api/v1/export/csv
 - ✅ Versionamento de API implementado
 - ✅ Compatibilidade 100% com código existente mantida

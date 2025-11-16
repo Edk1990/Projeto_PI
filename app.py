@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory, send_file
+from flask import Flask, request, jsonify, render_template, send_from_directory, send_file, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 import shutil
-import pandas as pd
-from io import BytesIO
+import csv
+from io import StringIO
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 # Configuração do banco de dados: usa o DATABASE_URL do Heroku (Postgres) se disponível, senão, usa o SQLite local.
@@ -278,46 +278,49 @@ def api_v1_get_estatisticas():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@app.route('/api/v1/export/excel', methods=['GET'])
-def api_v1_export_excel():
-    """Exportar todas as respostas para arquivo Excel"""
+@app.route('/api/v1/export/csv', methods=['GET'])
+def api_v1_export_csv():
+    """Exportar todas as respostas para arquivo CSV"""
     try:
         respostas = Resposta.query.order_by(Resposta.data_resposta.desc()).all()
         
-        # Criar DataFrame com pandas
-        dados = [{
-            'ID': r.id,
-            'Email': r.email,
-            'Data Visita': r.data_visita,
-            'Placa': r.placa,
-            'Consultor': r.consultor,
-            'Motivo Visita': r.motivo_visita,
-            'Problema Resolvido': r.problema_resolvido,
-            'Problema Não Resolvido': r.problema_nao_resolvido,
-            'Sugestões': r.sugestoes,
-            'NPS (0-10)': r.probability,
-            'Data Resposta': r.data_resposta.strftime('%Y-%m-%d %H:%M:%S')
-        } for r in respostas]
+        # Criar CSV em memória
+        output = StringIO()
+        writer = csv.writer(output)
         
-        df = pd.DataFrame(dados)
+        # Cabeçalhos
+        writer.writerow([
+            'ID', 'Email', 'Data Visita', 'Placa', 'Consultor',
+            'Motivo Visita', 'Problema Resolvido', 'Problema Não Resolvido',
+            'Sugestões', 'NPS (0-10)', 'Data Resposta'
+        ])
         
-        # Criar arquivo Excel em memória
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name='Respostas', index=False)
+        # Dados
+        for r in respostas:
+            writer.writerow([
+                r.id,
+                r.email,
+                r.data_visita,
+                r.placa,
+                r.consultor,
+                r.motivo_visita,
+                r.problema_resolvido,
+                r.problema_nao_resolvido,
+                r.sugestoes,
+                r.probability,
+                r.data_resposta.strftime('%Y-%m-%d %H:%M:%S')
+            ])
         
+        # Preparar resposta
         output.seek(0)
-        
-        # Gerar nome do arquivo com timestamp
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f'pesquisa_satisfacao_{timestamp}.xlsx'
+        filename = f'pesquisa_satisfacao_{timestamp}.csv'
         
-        return send_file(
-            output,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            as_attachment=True,
-            download_name=filename
-        )
+        response = make_response(output.getvalue())
+        response.headers['Content-Type'] = 'text/csv; charset=utf-8'
+        response.headers['Content-Disposition'] = f'attachment; filename={filename}'
+        
+        return response
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 

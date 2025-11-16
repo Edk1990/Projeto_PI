@@ -1,0 +1,6 @@
+# Railway ignore file
+.git/
+*.pyc
+__pycache__/
+*.db
+.env

@@ -252,6 +252,15 @@ tr:hover {
     background-color: #218838;
 }
 
+.nav-menu .export-btn {
+    background-color: #007bff;
+    font-weight: 500;
+}
+
+.nav-menu .export-btn:hover {
+    background-color: #0056b3;
+}
+
 /* Paginação */
 .pagination {
     display: flex;

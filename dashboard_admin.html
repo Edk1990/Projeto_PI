@@ -15,7 +15,12 @@
         <!-- Menu de navegação -->
         <nav class="nav-menu" role="navigation" aria-label="Navegação principal">
             <h2 id="dashboard-title">Dashboard de Respostas</h2>
-            <div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="exportarCSV()" 
+                        class="export-btn"
+                        aria-label="Exportar dados para CSV">
+                    📥 Exportar CSV
+                </button>
                 <button onclick="goBack()" 
                         aria-label="Voltar ao menu de login">Voltar ao Menu</button>
             </div>
@@ -327,6 +332,30 @@
         // Função para voltar
         function goBack() {
             window.location.href = 'tela_login_admin.html';
+        }
+
+        // Função para exportar CSV
+        function exportarCSV() {
+            try {
+                // Criar URL para download
+                const url = '/api/v1/export/csv';
+                
+                // Criar elemento temporário para download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `pesquisa_satisfacao_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                // Anunciar para leitores de tela
+                if (window.AccessibilityModule) {
+                    window.AccessibilityModule.announceToScreenReader('Download do arquivo CSV iniciado');
+                }
+            } catch (error) {
+                console.error('Erro ao exportar CSV:', error);
+                alert('Erro ao exportar CSV. Por favor, tente novamente.');
+            }
         }
 
         // Configurar filtro

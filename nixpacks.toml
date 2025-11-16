@@ -3,8 +3,14 @@ nixPkgs = ['python311']
 
 [phases.install]
 cmds = [
+  'echo "=== Limpando cache completo ==="',
+  'rm -rf /root/.cache/pip || true',
   'pip cache purge || true',
-  'pip install --no-cache-dir --force-reinstall -r requirements.txt'
+  'echo "=== Verificando código ==="',
+  'python check_imports.py',
+  'echo "=== Instalando dependências ==="',
+  'pip install --no-cache-dir --force-reinstall -r requirements.txt',
+  'echo "=== Build concluído ==="'
 ]
 
 [start]

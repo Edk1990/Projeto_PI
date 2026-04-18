@@ -7,10 +7,10 @@ import csv
 from io import StringIO
 
 app = Flask(__name__, static_folder='.', static_url_path='')
-# Configuração do banco de dados: usa o DATABASE_URL do Heroku (Postgres) se disponível, senão, usa o SQLite local.
+# Configuração do banco de dados: usa o DATABASE_URL da plataforma de deploy (Postgres) se disponível, senão, usa o SQLite local.
 database_url = os.environ.get('DATABASE_URL')
 if database_url:
-    # O Heroku usa 'postgres://', mas SQLAlchemy espera 'postgresql://'
+    # Algumas plataformas usam 'postgres://', mas SQLAlchemy espera 'postgresql://'
     database_url = database_url.replace('postgres://', 'postgresql://')
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///pesquisa.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

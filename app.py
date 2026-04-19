@@ -106,8 +106,8 @@ def recreate_database():
 
 
 # Criar o banco de dados inicial
-with app.app_context():
-    recreate_database()
+#with app.app_context():
+  #  recreate_database()
 
 
 @app.route('/submit', methods=['POST'])

@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 @app.route('/')
 def home():
     # Isso faz o link principal abrir a sua tela de login automaticamente
-    return app.send_static_file('tela_login.html')
+    return app.send_static_file('/tela_login.html')
 
 # Credenciais do administrador
 ADMIN_CREDENTIALS = {

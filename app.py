@@ -5,7 +5,7 @@ import os
 import urllib.parse
 import requests
 
-app = Flask(__name__, static_folder='.', static_url_path='')
+app = Flask(__name__, static_folder='.')
 
 # Tenta pegar o banco do Railway; se não achar, usa o SQLite local
 uri = os.environ.get("DATABASE_URL", "sqlite:///pesquisa.db")
@@ -19,8 +19,7 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def home():
-    # Isso faz o link principal abrir a sua tela de login automaticamente
-    return app.send_static_file('tela_login.html')
+    return send_from_directory('.', 'tela_login.html')
 
 # Credenciais do administrador
 ADMIN_CREDENTIALS = {

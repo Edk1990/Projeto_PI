@@ -6,7 +6,14 @@ import urllib.parse
 import requests
 
 app = Flask(__name__, static_folder='.', static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pesquisa.db'
+
+# Tenta pegar o banco do Railway; se não achar, usa o SQLite local
+uri = os.environ.get("DATABASE_URL", "sqlite:///pesquisa.db")
+
+# Corrige o prefixo exigido pelo SQLAlchemy moderno
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 

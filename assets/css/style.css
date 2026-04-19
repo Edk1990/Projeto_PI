@@ -1,0 +1,193 @@
+/* 1. Reset Básico & Definições Globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* 2. O Contêiner Principal */
+.container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInCard 0.6s ease-out;
+}
+
+/* Animação de entrada */
+@keyframes fadeInCard {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Área da Logo */
+.form-image {
+    background-color: #fafafa;
+    padding: 40px 20px 20px 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.form-image img {
+    max-width: 280px;
+    height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* 4. Contêiner de Texto e Ações */
+.welcome-container {
+    padding: 50px;
+}
+
+.welcome-content {
+    text-align: center;
+}
+
+/* Tipografia */
+h1 {
+    font-size: 2.4rem;
+    color: #004a99;
+    margin-bottom: 25px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+p {
+    font-size: 1.15rem;
+    color: #555;
+    margin-bottom: 20px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Destaque para a primeira frase */
+p strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* 5. Área dos Botões de Ação */
+.action-buttons {
+    margin-top: 45px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Estilo Base para os Botões */
+.start-survey-btn, 
+.admin-btn {
+    display: inline-block;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Botão Principal (Iniciar Pesquisa) */
+.start-survey-btn {
+    background-color: #0056b3;
+    color: white;
+    border: 2px solid #0056b3;
+    box-shadow: 0 4px 6px rgba(0, 86, 179, 0.2);
+}
+
+.start-survey-btn:hover {
+    background-color: #004085;
+    border-color: #004085;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
+}
+
+/* Botão Secundário (Painel Administrativo) */
+.admin-btn {
+    background-color: transparent;
+    color: #0056b3;
+    border: 2px solid #b3d1ff;
+}
+
+.admin-btn:hover {
+    background-color: rgba(0, 86, 179, 0.05);
+    border-color: #0056b3;
+    color: #004085;
+    transform: translateY(-2px);
+}
+
+/* 6. Área do Disclaimer (Rodapé do cartão) */
+.disclaimer {
+    margin-top: 20px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+}
+
+.disclaimer p {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 0;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   7. Responsividade (Ajustes para Dispositivos Móveis)
+   ========================================================================== */
+
+/* Celulares e Tablets pequenos (até 600px) */
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+        align-items: flex-start;
+    }
+
+    .container {
+        border-radius: 12px;
+    }
+
+    .welcome-container {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 35px;
+    }
+
+    .start-survey-btn, 
+    .admin-btn {
+        width: 100%;
+        padding: 14px 20px;
+    }
+}

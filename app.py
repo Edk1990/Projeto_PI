@@ -17,10 +17,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-@app.route('/')
-def home():
-    return send_file('tela_login.html')
-
 # Credenciais do administrador
 ADMIN_CREDENTIALS = {
     'email': 'admin',

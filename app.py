@@ -5,7 +5,7 @@ import os
 import urllib.parse
 import requests
 
-app = Flask(__name__, static_folder='.')
+app = Flask(__name__, static_folder=os.getcwd(), static_url_path='')
 
 # Tenta pegar o banco do Railway; se não achar, usa o SQLite local
 uri = os.environ.get("DATABASE_URL", "sqlite:///pesquisa.db")
@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def home():
-    return send_from_directory('.', 'tela_login.html')
+    return send_file('tela_login.html')
 
 # Credenciais do administrador
 ADMIN_CREDENTIALS = {

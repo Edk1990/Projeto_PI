@@ -6,7 +6,7 @@ import urllib.parse
 import requests
 
 # 1. Configuração do App 
-app = Flask(__name__, static_folder='.')
+app = Flask(__name__, static_folder='.', static_url_path='')
 
 # 2. Configuração do Banco de Dados
 uri = os.environ.get("DATABASE_URL", "sqlite:///pesquisa.db")
@@ -40,8 +40,7 @@ class Resposta(db.Model):
 # 5. Rota Principal 
 @app.route('/')
 def home():
-    # Isso garante que o link principal abra a tela de login
-    return send_from_directory('.', 'tela_login.html')
+    return send_from_directory(app.static_folder, 'tela_login.html')
 
 # 6. Função de WhatsApp 
 def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade):

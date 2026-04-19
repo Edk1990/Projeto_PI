@@ -40,7 +40,7 @@ class Resposta(db.Model):
 # 5. Rota Principal 
 @app.route('/')
 def home():
-    return send_from_directory(app.static_folder, 'tela_login.html')
+    return send_from_directory('.', 'tela_login.html')
 
 # 6. Função de WhatsApp 
 def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade):

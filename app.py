@@ -17,6 +17,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+@app.route('/')
+def home():
+    # Isso faz o link principal abrir a sua tela de login automaticamente
+    return app.send_static_file('tela_login.html')
+
 # Credenciais do administrador
 ADMIN_CREDENTIALS = {
     'email': 'admin',

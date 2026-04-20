@@ -49,7 +49,7 @@ def home():
 
 # 6. Função de WhatsApp 
 def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade):
-    telefone_gerente = "551900000000"  
+    telefone_gerente = "5519989288856"  
     api_key = "6073595" 
     
     mensagem = (

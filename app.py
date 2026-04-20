@@ -6,7 +6,11 @@ import urllib.parse
 import requests
 
 # 1. Configuração do App 
-app = Flask(__name__, static_folder='.', static_url_path='')
+base_dir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__, 
+            static_folder=base_dir, 
+            static_url_path='')
 
 # 2. Configuração do Banco de Dados
 uri = os.environ.get("DATABASE_URL", "sqlite:///pesquisa.db")
@@ -40,7 +44,8 @@ class Resposta(db.Model):
 # 5. Rota Principal 
 @app.route('/')
 def home():
-    return send_from_directory('.', 'tela_login.html')
+    # Força a busca no diretório base
+    return send_from_directory(base_dir, 'tela_login.html')
 
 # 6. Função de WhatsApp 
 def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade):

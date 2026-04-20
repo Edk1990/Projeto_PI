@@ -23,7 +23,7 @@ db = SQLAlchemy(app)
 
 # 3. Credenciais
 ADMIN_CREDENTIALS = {
-    'email': 'admin',
+    'email': 'admin@vwcapivari.com',
     'password': 'admin'
 }
 

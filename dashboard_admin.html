@@ -4,141 +4,491 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
-    <title>Dashboard Administrativo</title>
+    <title>Painel Gerencial | VW Capivari</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variáveis de Cores e Tema (Padrão VW) */
+        :root {
+            --vw-dark-blue: #001e50;
+            --vw-light-blue: #00b0f0;
+            --bg-color: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-gray: #6b7280;
+            --border-color: #e5e7eb;
+            --success: #10b981;
+            --success-bg: #d1fae5;
+            --danger: #ef4444;
+            --danger-bg: #fee2e2;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Topbar / Header */
+        .topbar {
+            background-color: var(--vw-dark-blue);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* Container Principal */
+        .dashboard-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+        }
+
+        .page-header p {
+            color: var(--text-gray);
+            margin-top: 4px;
+        }
+
+        /* Cards de Estatísticas */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--vw-light-blue);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--vw-dark-blue);
+        }
+
+        .stat-card#lastResponse {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        /* Filtros */
+        .filters-section {
+            background: var(--card-bg);
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Separa os botões das datas manuais */
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-quick {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-quick:hover {
+            border-color: var(--vw-light-blue);
+            color: var(--vw-light-blue);
+        }
+
+        .btn-quick.active {
+            background: var(--vw-light-blue);
+            color: white;
+            border-color: var(--vw-light-blue);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters-section input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            outline: none;
+            color: var(--text-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--vw-light-blue);
+            color: white;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #0098d4;
+        }
+
+        /* Tabela de Dados */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        thead {
+            background-color: #f8fafc;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        th {
+            padding: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background-color: #f1f5f9;
+            color: var(--vw-dark-blue);
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.sim {
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        .badge.nao {
+            background-color: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pagination button {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-gray);
+        }
+
+        .no-responses {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="dashboard-content">
-        <div class="nav-menu">
-            <h2>Dashboard de Respostas</h2>
-            <div>
-                <button onclick="goBack()">Voltar ao Menu</button>
-            </div>
-        </div>
 
-        <div class="welcome-content">
-            <h1>Bem-vindo ao Dashboard Administrativo</h1>
-            <p>Visualize e gerencie as respostas da pesquisa de satisfação</p>
+    <header class="topbar">
+        <div class="topbar-brand">
+            VW Capivari | Administrativo
+        </div>
+        <button class="btn-outline" onclick="goBack()">Sair do Painel</button>
+    </header>
+
+    <main class="dashboard-content">
+        
+        <div class="page-header">
+            <h1>Visão Geral de Satisfação</h1>
+            <p>Acompanhe o feedback dos clientes em tempo real</p>
         </div>
 
         <div class="stat-cards">
             <div class="stat-card">
-                <h3>Total de Respostas</h3>
+                <h3>Total de Avaliações</h3>
                 <p id="totalResponses">0</p>
             </div>
             <div class="stat-card">
                 <h3>Média de Satisfação</h3>
-                <p id="satisfactionAvg">0%</p>
+                <p id="satisfactionAvg" style="color: var(--vw-light-blue);">0%</p>
             </div>
             <div class="stat-card">
-                <h3>Última Resposta</h3>
-                <p id="lastResponse">Nenhuma resposta registrada</p>
+                <h3>Último Feedback Registrado</h3>
+                <p id="lastResponse" style="color: var(--text-dark);">Aguardando dados...</p>
             </div>
         </div>
 
-        <div class="filters">
-            <label for="dateRange">Período:</label>
-            <input type="date" id="startDate">
-            <input type="date" id="endDate">
-            <button class="filter-btn">Filtrar</button>
+        <div class="filters-section">
+            <div class="quick-filters">
+                <button class="btn-quick active" data-range="all">Todo o Período</button>
+                <button class="btn-quick" data-range="today">Hoje</button>
+                <button class="btn-quick" data-range="week">Últimos 7 Dias</button>
+                <button class="btn-quick" data-range="month">Este Mês</button>
+            </div>
+            
+            <div class="filter-group">
+                <input type="date" id="startDate" title="Data Inicial">
+                <span style="color: var(--text-gray); font-size: 0.9rem;">até</span>
+                <input type="date" id="endDate" title="Data Final">
+                <button class="btn-primary filter-btn">Buscar</button>
+            </div>
         </div>
 
-        <div class="results-table">
-            <div class="results-table-wrapper">
-                <table class="results-table">
+        <div class="table-container">
+            <div id="no-responses" class="no-responses">
+                Carregando banco de dados...
+            </div>
+
+            <div class="table-responsive">
+                <table id="dataTable" style="display: none;">
                     <thead>
                         <tr>
-                            <th data-sort="id">ID</th>
-                            <th data-sort="data_resposta">Data Resposta</th>
-                            <th data-sort="data_visita">Data Visita</th>
-                            <th data-sort="placa">Placa</th>
-                            <th data-sort="consultor">Consultor</th>
-                            <th data-sort="motivo_visita">Motivo Visita</th>
-                            <th data-sort="probability">Probabilidade de Retorno</th>
-                            <th data-sort="problema_resolvido">Problema Resolvido</th>
-                            <th data-sort="problema_nao_resolvido">Problema Não Resolvido</th>
-                            <th data-sort="email">E-mail</th>
-                            <th data-sort="sugestoes">Sugestões</th>
+                            <th data-sort="id">ID ↕</th>
+                            <th data-sort="data_resposta">Data Resposta ↕</th>
+                            <th data-sort="data_visita">Data Visita ↕</th>
+                            <th data-sort="placa">Placa ↕</th>
+                            <th data-sort="consultor">Consultor ↕</th>
+                            <th data-sort="motivo_visita">Serviço ↕</th>
+                            <th data-sort="probability">Retorno (%) ↕</th>
+                            <th data-sort="problema_resolvido">Resolvido? ↕</th>
+                            <th data-sort="email">E-mail ↕</th>
                         </tr>
                     </thead>
                     <tbody id="responsesTable">
-                        <!-- Respostas serão inseridas aqui via JavaScript -->
-                    </tbody>
+                        </tbody>
                 </table>
+            </div>
+
+            <div class="pagination" id="paginationControl" style="display: none;">
+                <button onclick="changePage('prev')">← Anterior</button>
+                <span id="pageInfo">Página 1</span>
+                <button onclick="changePage('next')">Próxima →</button>
             </div>
         </div>
 
-        <div class="pagination">
-            <button onclick="changePage('prev')">Anterior</button>
-            <span id="pageInfo"></span>
-            <button onclick="changePage('next')">Próximo</button>
-        </div>
-
-        <div id="no-responses" class="no-responses">
-            Carregando respostas...
-        </div>
-    </div>
+    </main>
 
     <script>
-        // Configurações de paginação
+        // --- VARIÁVEIS GLOBAIS ---
         const itemsPerPage = 10;
         let currentPage = 1;
-        let currentSort = { field: 'id', direction: 'asc' };
-        let allData = [];
+        let currentSort = { field: 'id', direction: 'desc' };
+        let originalData = []; // Backup intocável dos dados
+        let allData = []; // Dados que estão sendo mostrados/filtrados
 
-        // Função para calcular média de satisfação
+        // --- FUNÇÕES UTILITÁRIAS ---
         function calcularMediaSatisfacao(respostas) {
             if (!respostas || respostas.length === 0) return 0;
-            
             let soma = 0;
             let totalValido = 0;
-            
             respostas.forEach(resposta => {
-                // Usa o campo probability do formulário
                 if (resposta.probability !== undefined && !isNaN(resposta.probability)) {
                     soma += parseInt(resposta.probability);
                     totalValido++;
                 }
             });
-            
             if (totalValido === 0) return 0;
-            
-            // Calcula a média já em porcentagem (0-100%)
-            const media = (soma / totalValido).toFixed(1);
-            return Math.min(Math.max(0, media), 100);
+            return Math.min(Math.max(0, (soma / totalValido).toFixed(1)), 100);
         }
 
-        // Função para formatar data
         function formatDate(dateString) {
-            if (!dateString) return '';
+            if (!dateString) return '-';
             const date = new Date(dateString);
-            return date.toLocaleString('pt-BR');
+            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' });
         }
 
-        // Função para ordenar dados
+        // Formata data para o formato de input (YYYY-MM-DD) garantindo o fuso horário local
+        function formatDateForInput(date) {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function getBadgeHtml(valorBooleano) {
+            if(valorBooleano) {
+                return `<span class="badge sim">Sim</span>`;
+            }
+            return `<span class="badge nao">Não</span>`;
+        }
+
+        function atualizarCards() {
+            document.getElementById('totalResponses').textContent = allData.length;
+            document.getElementById('satisfactionAvg').textContent = `${calcularMediaSatisfacao(allData)}%`;
+            if (allData.length > 0) {
+                // Acha a resposta mais recente entre as filtradas
+                const sorted = [...allData].sort((a, b) => new Date(b.data_resposta) - new Date(a.data_resposta));
+                document.getElementById('lastResponse').textContent = formatDate(sorted[0].data_resposta);
+            } else {
+                document.getElementById('lastResponse').textContent = '-';
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'tela_login.html'; // Volta para a tela de login
+        }
+
+        // --- FUNÇÕES DE TABELA E ORDENAÇÃO ---
         function sortData(field, direction) {
             currentSort = { field, direction };
             const sortedData = [...allData];
             
-            if (field === 'probability') {
+            if (field === 'probability' || field === 'id') {
                 sortedData.sort((a, b) => {
-                    const valA = parseInt(a.probability || 0);
-                    const valB = parseInt(b.probability || 0);
+                    const valA = parseInt(a[field] || 0);
+                    const valB = parseInt(b[field] || 0);
                     return direction === 'asc' ? valA - valB : valB - valA;
                 });
             } else {
                 sortedData.sort((a, b) => {
-                    const valA = a[field]?.toLowerCase() || '';
-                    const valB = b[field]?.toLowerCase() || '';
+                    const valA = String(a[field] || '').toLowerCase();
+                    const valB = String(b[field] || '').toLowerCase();
                     return direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
                 });
             }
-            
             allData = sortedData;
             updateTable();
         }
 
-        // Função para atualizar a tabela
         function updateTable() {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -150,17 +500,15 @@
             currentData.forEach(response => {
                 html += `
                     <tr>
-                        <td>${response.id}</td>
+                        <td style="font-weight: 600; color: var(--vw-dark-blue);">#${response.id}</td>
                         <td>${formatDate(response.data_resposta)}</td>
                         <td>${formatDate(response.data_visita)}</td>
-                        <td>${response.placa}</td>
+                        <td><span style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #e2e8f0; font-family: monospace;">${response.placa}</span></td>
                         <td>${response.consultor}</td>
                         <td>${response.motivo_visita}</td>
-                        <td>${response.probability || '0%'}</td>
-                        <td>${response.problema_resolvido ? 'Sim' : 'Não'}</td>
-                        <td>${response.problema_nao_resolvido ? 'Sim' : 'Não'}</td>
-                        <td>${response.email}</td>
-                        <td>${response.sugestoes}</td>
+                        <td><strong>${response.probability || '0'}%</strong></td>
+                        <td>${getBadgeHtml(response.problema_resolvido)}</td>
+                        <td>${response.email || '-'}</td>
                     </tr>
                 `;
             });
@@ -169,9 +517,8 @@
             updatePagination();
         }
 
-        // Função para atualizar paginação
         function updatePagination() {
-            const totalPages = Math.ceil(allData.length / itemsPerPage);
+            const totalPages = Math.ceil(allData.length / itemsPerPage) || 1;
             const pageInfo = document.getElementById('pageInfo');
             pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
             
@@ -182,7 +529,6 @@
             nextBtn.disabled = currentPage === totalPages;
         }
 
-        // Função para mudar página
         function changePage(direction) {
             if (direction === 'prev' && currentPage > 1) {
                 currentPage--;
@@ -192,81 +538,114 @@
             updateTable();
         }
 
-        // Carregar respostas do servidor
+        // --- SISTEMA DE FILTRAGEM INTELIGENTE ---
+        function aplicarFiltro(startDateStr, endDateStr) {
+            if (!startDateStr || !endDateStr) {
+                allData = [...originalData]; // Sem filtro = mostra tudo
+            } else {
+                const start = new Date(startDateStr + "T00:00:00");
+                const end = new Date(endDateStr + "T23:59:59"); // Garante que pega até o final do dia
+                
+                allData = originalData.filter(item => {
+                    const dataItem = new Date(item.data_resposta);
+                    return dataItem >= start && dataItem <= end;
+                });
+            }
+            
+            currentPage = 1;
+            sortData('id', 'desc'); // Ordena os filtrados
+            atualizarCards();
+        }
+
+        // --- CARREGAMENTO INICIAL (API) ---
         async function loadResponses() {
             try {
                 const response = await fetch('/admin/respostas');
-                allData = await response.json();
-                console.log('Dados recebidos:', allData); // Debug para ver a estrutura dos dados
+                const rawData = await response.json();
                 
-                if (allData.length > 0) {
+                if (rawData.length > 0) {
+                    originalData = rawData; 
+                    allData = [...originalData]; 
+                    
                     document.getElementById('no-responses').style.display = 'none';
+                    document.getElementById('dataTable').style.display = 'table';
+                    document.getElementById('paginationControl').style.display = 'flex';
                     
-                    // Atualizar total de respostas
-                    document.getElementById('totalResponses').textContent = `Total de Respostas: ${allData.length}`;
-                    
-                    // Calcular e atualizar média de satisfação
-                    const media = calcularMediaSatisfacao(allData);
-                    console.log('Média calculada:', media); // Debug para ver o valor calculada
-                    document.getElementById('satisfactionAvg').textContent = `${media}%`;
-                    
-                    // Atualizar última resposta
-                    const ultimaResposta = allData[allData.length - 1];
-                    if (ultimaResposta) {
-                        const date = new Date(ultimaResposta.data_resposta);
-                        const formattedDate = date.toLocaleString('pt-BR');
-                        document.getElementById('lastResponse').textContent = `Última Resposta: ${formattedDate}`;
-                    }
-                    
-                    currentPage = 1;
-                    updateTable();
+                    sortData('id', 'desc'); 
+                    atualizarCards();
                 } else {
-                    document.getElementById('no-responses').textContent = 'Nenhuma resposta encontrada.';
-                    document.getElementById('totalResponses').textContent = 'Total de Respostas: 0';
-                    document.getElementById('satisfactionAvg').textContent = '0%';
-                    document.getElementById('lastResponse').textContent = 'Nenhuma resposta registrada';
+                    document.getElementById('no-responses').textContent = 'Nenhuma resposta encontrada no banco de dados.';
                 }
             } catch (error) {
-                console.error('Erro ao carregar respostas:', error);
-                document.getElementById('no-responses').textContent = 'Erro ao carregar as respostas. Por favor, tente novamente.';
-                document.getElementById('totalResponses').textContent = 'Erro ao carregar dados';
-                document.getElementById('satisfactionAvg').textContent = 'Erro ao carregar dados';
-                document.getElementById('lastResponse').textContent = 'Erro ao carregar dados';
+                console.error('Erro:', error);
+                document.getElementById('no-responses').textContent = 'Falha de conexão com o servidor.';
             }
         }
 
-        // Função para voltar
-        function goBack() {
-            window.location.href = 'tela_login_admin.html';
-        }
+        // --- EVENTOS E LISTENERS ---
+        // Clique no Botão Buscar Manual
+        document.querySelector('.filter-btn').addEventListener('click', () => {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            
+            // Tira a seleção dos botões rápidos
+            document.querySelectorAll('.btn-quick').forEach(b => b.classList.remove('active'));
+            
+            aplicarFiltro(start, end);
+        });
 
-        // Configurar filtro
-        const filterBtn = document.querySelector('.filter-btn');
-        if (filterBtn) {
-            filterBtn.addEventListener('click', loadResponses);
-        }
+        // Cliques nos Botões Rápidos
+        document.querySelectorAll('.btn-quick').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Altera a cor do botão ativo
+                document.querySelectorAll('.btn-quick').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
 
-        // Configurar ordenação
-        document.querySelectorAll('th[data-sort]').forEach(th => {
-            th.addEventListener('click', () => {
-                const field = th.dataset.sort;
-                if (currentSort.field === field) {
-                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
-                } else {
-                    currentSort.field = field;
-                    currentSort.direction = 'asc';
+                const range = e.target.dataset.range;
+                const hoje = new Date();
+                let dataInicial = new Date();
+                let dataFinal = new Date();
+
+                const startInput = document.getElementById('startDate');
+                const endInput = document.getElementById('endDate');
+
+                if (range === 'all') {
+                    startInput.value = '';
+                    endInput.value = '';
+                    aplicarFiltro('', '');
+                    return;
                 }
-                sortData(field, currentSort.direction);
+
+                if (range === 'today') {
+                    // dataInicial já é hoje
+                } else if (range === 'week') {
+                    dataInicial.setDate(hoje.getDate() - 7);
+                } else if (range === 'month') {
+                    dataInicial.setDate(1); // Dia 1 do mês atual
+                }
+
+                // Preenche os campos visuais usando a função corrigida para fuso local
+                const strStart = formatDateForInput(dataInicial);
+                const strEnd = formatDateForInput(dataFinal);
                 
-                // Atualizar indicadores de ordenação
-                document.querySelectorAll('th[data-sort]').forEach(th => {
-                    th.classList.remove('asc', 'desc');
-                });
-                th.classList.add(currentSort.direction);
+                startInput.value = strStart;
+                endInput.value = strEnd;
+
+                aplicarFiltro(strStart, strEnd);
             });
         });
 
-        // Carregar respostas quando a página carregar
+        // Cliques para ordenação nas colunas da tabela
+        document.querySelectorAll('th[data-sort]').forEach(th => {
+            th.addEventListener('click', () => {
+                const field = th.dataset.sort;
+                currentSort.direction = (currentSort.field === field && currentSort.direction === 'asc') ? 'desc' : 'asc';
+                currentSort.field = field;
+                sortData(field, currentSort.direction);
+            });
+        });
+
+        // Inicializa a página
         document.addEventListener('DOMContentLoaded', loadResponses);
     </script>
 </body>

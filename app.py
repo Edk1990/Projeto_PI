@@ -45,7 +45,7 @@ class Resposta(db.Model):
 @app.route('/')
 def home():
     # Força a busca no diretório base
-    return send_from_directory(base_dir, 'tela_login.html')
+    return send_from_directory(base_dir, 'tela__login.html')
 
 # 6. Função de WhatsApp 
 def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade):

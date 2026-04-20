@@ -80,10 +80,10 @@ with app.app_context():
 def submit():
     try:
         email = request.form.get('email', '')
-        data_visita = request.form.get('date')
+        data_visita = request.form.get('data_visita') 
         placa = request.form.get('plate')
         consultor = request.form.get('consultant')
-        motivo_visita = request.form.get('reason')
+        motivo_visita = request.form.get('motivo_visita') 
         problema_resolvido = request.form.get('resolved')
         problema_nao_resolvido = request.form.get('unresolved_reason', '')
         sugestoes = request.form.get('suggestions', '')

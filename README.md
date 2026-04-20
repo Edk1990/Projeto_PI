@@ -23,7 +23,7 @@ Este projeto foi desenvolvido como parte do **Projeto Integrador** para o curso 
 3. Inicie o servidor:
    `python app.py`
 4. Acesse no navegador:
-   `http://127.0.0.1:5000/tela__login.html`
+   `http://127.0.0.1:5000/tela_login.html`
 
 ---
 **Desenvolvido pelo Grupo de PI - Bacharelado em Tecnologia da Informação & Engenharia de Computação - UNIVESP**

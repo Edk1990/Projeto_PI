@@ -10,9 +10,10 @@ Este sistema foi desenvolvido como parte do **Projeto Integrador (PI)** com foco
 
 O problema original consistia na demora entre a insatisfação do cliente e a ação do gerente. Para solucionar isso, criamos uma aplicação web responsiva que coleta o feedback do cliente logo após o atendimento e toma decisões automatizadas com base nas respostas.
 
+<<<<<<< HEAD
 ### 🌐 Link de Produção (Online)
 **Acesse o sistema rodando na nuvem:** [https://pi-vwcapivari.up.railway.app/](https://pi-vwcapivari.up.railway.app/)
-
+=======
 ---
 
 ## ✨ Principais Funcionalidades

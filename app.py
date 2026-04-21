@@ -79,20 +79,21 @@ with app.app_context():
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
-        email = request.form.get('email', '')
+        email = request.form.get('email')
         data_visita = request.form.get('data_visita') 
-        placa = request.form.get('plate')
-        consultor = request.form.get('consultant')
+        placa = request.form.get('placa')
+        consultor = request.form.get('consultor')
         motivo_visita = request.form.get('motivo_visita') 
-        problema_resolvido = request.form.get('resolved')
-        problema_nao_resolvido = request.form.get('unresolved_reason', '')
-        sugestoes = request.form.get('suggestions', '')
+        problema_resolvido = request.form.get('resolvido')
+        problema_nao_resolvido = request.form.get('nao_resolvido')
+        sugestoes = request.form.get('sugestoes')
         
         try:
             probability = int(request.form.get('probability', 0))
         except:
             probability = 0
 
+        # CORRIGIDO: probability=probability em vez de probabilidade
         nova_resposta = Resposta(
             email=email, data_visita=data_visita, placa=placa,
             consultor=consultor, motivo_visita=motivo_visita,
@@ -121,9 +122,18 @@ def admin_login():
 @app.route('/admin/respostas', methods=['GET'])
 def get_respostas():
     respostas = Resposta.query.order_by(Resposta.data_resposta.desc()).all()
+    # CORRIGIDO: Retornando TODOS os dados para o dashboard
     return jsonify([{
-        'id': r.id, 'placa': r.placa, 'consultor': r.consultor,
-        'probability': r.probability, 'data_resposta': r.data_resposta.strftime('%d/%m %H:%M')
+        'id': r.id, 
+        'email': r.email,
+        'data_visita': r.data_visita,
+        'placa': r.placa, 
+        'consultor': r.consultor,
+        'motivo_visita': r.motivo_visita,
+        'problema_resolvido': r.problema_resolvido == 'Sim',
+        'sugestoes': r.sugestoes,
+        'probability': r.probability, 
+        'data_resposta': r.data_resposta.isoformat()
     } for r in respostas])
 
 # Rota para carregar arquivos CSS, JS e Imagens automaticamente

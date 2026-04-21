@@ -12,16 +12,16 @@
             const form = document.querySelector('form');
             const progressBar = document.querySelector('.progress-bar');
             const submitButton = document.querySelector('button[type="submit"]');
-            const emailInput = document.querySelector('input[name="email"]');
             
-            // CORREÇÃO: Nomes atualizados para bater com o Banco de Dados
+            // Todos os seletores sincronizados em português
+            const emailInput = document.querySelector('input[name="email"]');
             const dateInput = document.querySelector('input[name="data_visita"]');
-            const plateInput = document.querySelector('input[name="plate"]');
-            const consultantInput = document.querySelector('input[name="consultant"]');
+            const plateInput = document.querySelector('input[name="placa"]');
+            const consultantInput = document.querySelector('input[name="consultor"]');
             const reasonSelect = document.querySelector('select[name="motivo_visita"]');
-            const resolvedRadios = document.querySelectorAll('input[name="resolved"]');
-            const unresolvedReason = document.querySelector('input[name="unresolved_reason"]');
-            const suggestions = document.querySelector('textarea[name="suggestions"]');
+            const resolvedRadios = document.querySelectorAll('input[name="resolvido"]');
+            const unresolvedReason = document.querySelector('input[name="nao_resolvido"]');
+            const suggestions = document.querySelector('textarea[name="sugestoes"]');
             
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error-message';
@@ -171,8 +171,8 @@
                 <div style="display: flex; flex-direction: column; gap: 0.85rem;">
                     
                     <input type="text" name="data_visita" required placeholder="Data do Atendimento (DD/MM/AAAA)" inputmode="numeric" maxlength="10">
-                    <input type="text" name="plate" placeholder="Placa do Veículo (Ex: ABC-1234 ou ABC-1D23)" required maxlength="8">
-                    <input type="text" name="consultant" placeholder="Consultor que realizou o atendimento" required>
+                    <input type="text" name="placa" placeholder="Placa do Veículo (Ex: ABC-1234 ou ABC-1D23)" required maxlength="8">
+                    <input type="text" name="consultor" placeholder="Consultor que realizou o atendimento" required>
                     <input type="email" name="email" placeholder="E-mail (opcional)" inputmode="email">
                 </div>
             </div>
@@ -196,14 +196,14 @@
                     <label class="main-label">2 - Todos os problemas ou dúvidas foram corrigidos/sanados?</label>
                     <div class="radio-group">
                         <label>
-                            <input type="radio" name="resolved" value="Sim" required> Sim
+                            <input type="radio" name="resolvido" value="Sim" required> Sim
                         </label>
                         <label>
-                            <input type="radio" name="resolved" value="Não"> Não
+                            <input type="radio" name="resolvido" value="Não"> Não
                         </label>
                     </div>
                     <div class="unresolved-section">
-                        <input type="text" name="unresolved_reason" placeholder="Se respondeu 'Não', descreva o que faltou..." style="margin-top: 0.5rem;">
+                        <input type="text" name="nao_resolvido" placeholder="Se respondeu 'Não', descreva o que faltou..." style="margin-top: 0.5rem;">
                     </div>
                 </div>
 
@@ -221,7 +221,7 @@
 
                 <div class="question-group">
                     <label class="main-label">4 - Alguma sugestão para melhorarmos?</label>
-                    <textarea name="suggestions" rows="4" placeholder="Descreva em poucas palavras..." required></textarea>
+                    <textarea name="sugestoes" rows="4" placeholder="Descreva em poucas palavras..." required></textarea>
                 </div>
             </div>
 

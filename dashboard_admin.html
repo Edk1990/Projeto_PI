@@ -455,7 +455,8 @@
             document.getElementById('totalResponses').textContent = allData.length;
             document.getElementById('satisfactionAvg').textContent = `${calcularMediaSatisfacao(allData)}%`;
             if (allData.length > 0) {
-                const sorted = [...allData].sort((a, b) => new Date(b.data_resposta) - new Date(a.data_resposta));
+                // CORREÇÃO: Agora ordena pelo ID (do maior para o menor) em vez da data
+                const sorted = [...allData].sort((a, b) => parseInt(b.id) - parseInt(a.id));
                 document.getElementById('lastResponse').textContent = formatDate(sorted[0].data_resposta);
             } else {
                 document.getElementById('lastResponse').textContent = '-';

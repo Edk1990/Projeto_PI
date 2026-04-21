@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import urllib.parse
 import requests
@@ -39,7 +39,7 @@ class Resposta(db.Model):
     problema_nao_resolvido = db.Column(db.String(500))
     sugestoes = db.Column(db.String(500))
     probability = db.Column(db.Integer)
-    data_resposta = db.Column(db.DateTime, default=datetime.utcnow)
+    data_resposta = db.Column(db.DateTime, default=lambda: datetime.utcnow() - timedelta(hours=3))
 
 # 5. Rota Principal 
 @app.route('/')

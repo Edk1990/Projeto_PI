@@ -48,8 +48,8 @@ def home():
     return send_from_directory(base_dir, 'tela_login.html')
 
 # 6. Função de WhatsApp 
-def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade):
-    telefone_gerente = "5519555555555"  
+def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilidade, sugestoes):
+    telefone_gerente = "5519989288856"  
     api_key = "6073595" 
     
     mensagem = (
@@ -57,7 +57,8 @@ def enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probabilida
         f"🚗 *Placa:* {placa}\n"
         f"👨‍💼 *Consultor:* {consultor}\n"
         f"❌ *Problema:* {problema_nao_resolvido if problema_nao_resolvido else 'Não especificado'}\n"
-        f"📉 *Chance de retorno:* {probabilidade}%\n\n"
+        f"📉 *Chance de retorno:* {probabilidade}%\n"
+        f"💡 *Sugestão:* {sugestoes if sugestoes else 'Nenhuma sugestão enviada'}\n\n"
         f"Por favor, verifique a situação imediatamente!"
     )
     
@@ -79,21 +80,21 @@ with app.app_context():
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
-        email = request.form.get('email')
+        # Puxando as chaves exatas que vêm do tela_perguntas.html
+        email = request.form.get('email', '')
         data_visita = request.form.get('data_visita') 
-        placa = request.form.get('placa')
-        consultor = request.form.get('consultor')
+        placa = request.form.get('plate')                  
+        consultor = request.form.get('consultant')         
         motivo_visita = request.form.get('motivo_visita') 
-        problema_resolvido = request.form.get('resolvido')
-        problema_nao_resolvido = request.form.get('nao_resolvido')
-        sugestoes = request.form.get('sugestoes')
-        
+        problema_resolvido = request.form.get('resolved')  
+        problema_nao_resolvido = request.form.get('unresolved_reason', '') 
+        sugestoes = request.form.get('suggestions', '')    
         try:
             probability = int(request.form.get('probability', 0))
         except:
             probability = 0
 
-        # CORRIGIDO: probability=probability em vez de probabilidade
+        
         nova_resposta = Resposta(
             email=email, data_visita=data_visita, placa=placa,
             consultor=consultor, motivo_visita=motivo_visita,
@@ -106,7 +107,7 @@ def submit():
         db.session.commit()
 
         if problema_resolvido == 'Não' or probability <= 50:
-            enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probability)
+            enviar_alerta_whatsapp(placa, consultor, problema_nao_resolvido, probability, sugestoes)
             
         return jsonify({'success': True}), 200
     except Exception as e:

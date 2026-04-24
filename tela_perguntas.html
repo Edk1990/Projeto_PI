@@ -21,6 +21,7 @@
             const reasonSelect = document.querySelector('select[name="motivo_visita"]');
             const resolvedRadios = document.querySelectorAll('input[name="resolved"]');
             const unresolvedReason = document.querySelector('input[name="unresolved_reason"]');
+            const probabilitySelect = document.querySelector('select[name="probability"]'); // <-- NOVO
             const suggestions = document.querySelector('textarea[name="suggestions"]');
             
             const errorDiv = document.createElement('div');
@@ -57,16 +58,16 @@
             // ==========================================
 
             function updateProgress() {
-                // Só atualiza se os campos existirem na tela para não quebrar o JS
-                if (!dateInput || !plateInput || !consultantInput || !reasonSelect) return;
-
+               if (!dateInput || !plateInput || !consultantInput || !reasonSelect || !probabilitySelect) return;
                 const requiredFields = [
-                    dateInput.value.length === 10, 
-                    plateInput.value.length === 8, 
-                    consultantInput.value,
-                    reasonSelect.value,
-                    (resolvedRadios[0] && resolvedRadios[0].checked) || (resolvedRadios[1] && resolvedRadios[1].checked)
+                    dateInput.value.length === 10, // 1. Data completa
+                    plateInput.value.length === 8, // 2. Placa completa
+                    consultantInput.value.trim() !== '', // 3. Consultor
+                    reasonSelect.value !== '', // 4. Pergunta 1 (Motivo)
+                    (resolvedRadios[0] && resolvedRadios[0].checked) || (resolvedRadios[1] && resolvedRadios[1].checked), // 5. Pergunta 2 (Resolvido)
+                    probabilitySelect.value !== '' // 6. Pergunta 3 (Probabilidade)
                 ];
+                
                 const filledFields = requiredFields.filter(field => field).length;
                 const progress = (filledFields / requiredFields.length) * 100;
                 progressBar.style.width = progress + '%';

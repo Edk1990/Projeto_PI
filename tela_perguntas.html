@@ -13,15 +13,15 @@
             const progressBar = document.querySelector('.progress-bar');
             const submitButton = document.querySelector('button[type="submit"]');
             
-            // Todos os seletores sincronizados em português
+            // Seletores mapeados exatamente com os 'names' do HTML
             const emailInput = document.querySelector('input[name="email"]');
             const dateInput = document.querySelector('input[name="data_visita"]');
-            const plateInput = document.querySelector('input[name="placa"]');
-            const consultantInput = document.querySelector('input[name="consultor"]');
+            const plateInput = document.querySelector('input[name="plate"]');
+            const consultantInput = document.querySelector('input[name="consultant"]');
             const reasonSelect = document.querySelector('select[name="motivo_visita"]');
-            const resolvedRadios = document.querySelectorAll('input[name="resolvido"]');
-            const unresolvedReason = document.querySelector('input[name="nao_resolvido"]');
-            const suggestions = document.querySelector('textarea[name="sugestoes"]');
+            const resolvedRadios = document.querySelectorAll('input[name="resolved"]');
+            const unresolvedReason = document.querySelector('input[name="unresolved_reason"]');
+            const suggestions = document.querySelector('textarea[name="suggestions"]');
             
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error-message';
@@ -32,27 +32,34 @@
             // ==========================================
 
             // Máscara de Data (DD/MM/AAAA)
-            dateInput.addEventListener('input', function(e) {
-                let v = e.target.value.replace(/\D/g, ''); 
-                if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, '$1/$2'); 
-                if (v.length > 5) v = v.replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3'); 
-                e.target.value = v.substring(0, 10); 
-                updateProgress();
-            });
+            if (dateInput) {
+                dateInput.addEventListener('input', function(e) {
+                    let v = e.target.value.replace(/\D/g, ''); 
+                    if (v.length > 2) v = v.replace(/^(\d{2})(\d)/, '$1/$2'); 
+                    if (v.length > 5) v = v.replace(/^(\d{2})\/(\d{2})(\d)/, '$1/$2/$3'); 
+                    e.target.value = v.substring(0, 10); 
+                    updateProgress();
+                });
+            }
 
-            // Máscara de Placa (Mercosul e Antiga: ABC-1234 ou ABC-1D23)
-            plateInput.addEventListener('input', function(e) {
-                let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
-                if (v.length > 3) {
-                    v = v.replace(/^([A-Z]{3})([A-Z0-9]+)/, '$1-$2');
-                }
-                e.target.value = v.substring(0, 8); 
-                updateProgress();
-            });
+            // Máscara de Placa (Mercosul e Antiga)
+            if (plateInput) {
+                plateInput.addEventListener('input', function(e) {
+                    let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
+                    if (v.length > 3) {
+                        v = v.replace(/^([A-Z]{3})([A-Z0-9]+)/, '$1-$2');
+                    }
+                    e.target.value = v.substring(0, 8); 
+                    updateProgress();
+                });
+            }
 
             // ==========================================
 
             function updateProgress() {
+                // Só atualiza se os campos existirem na tela para não quebrar o JS
+                if (!dateInput || !plateInput || !consultantInput || !reasonSelect) return;
+
                 const requiredFields = [
                     dateInput.value.length === 10, 
                     plateInput.value.length === 8, 
@@ -145,6 +152,7 @@
                 }
             });
 
+            // Chama a barra de progresso pela primeira vez
             updateProgress();
         });
     </script>
@@ -170,10 +178,11 @@
                 <h3 class="main-label">Dados do Cliente</h3>
                 <div style="display: flex; flex-direction: column; gap: 0.85rem;">
                     
-                <input type="text" name="data_visita" required placeholder="Data do Atendimento" inputmode="numeric" maxlength="10">
-                <input type="text" name="plate" placeholder="Placa do Veículo" required maxlength="8">
-                <input type="text" name="consultant" placeholder="Nome do Consultor" required>
-                <input type="email" name="email" placeholder="E-mail (Opcional)" inputmode="email">
+                    <input type="text" name="data_visita" required placeholder="Data do Atendimento" inputmode="numeric" maxlength="10">
+                    <input type="text" name="plate" placeholder="Placa do Veículo" required maxlength="8">
+                    <input type="text" name="consultant" placeholder="Nome do Consultor" required>
+                    <input type="email" name="email" placeholder="E-mail (Opcional)" inputmode="email">
+                
                 </div>
             </div>
 
@@ -196,14 +205,14 @@
                     <label class="main-label">2 - Todos os problemas ou dúvidas foram corrigidos/sanados?</label>
                     <div class="radio-group">
                         <label>
-                            <input type="radio" name="resolvido" value="Sim" required> Sim
+                            <input type="radio" name="resolved" value="Sim" required> Sim
                         </label>
                         <label>
-                            <input type="radio" name="resolvido" value="Não"> Não
+                            <input type="radio" name="resolved" value="Não"> Não
                         </label>
                     </div>
                     <div class="unresolved-section">
-                        <input type="text" name="nao_resolvido" placeholder="Se respondeu 'Não', descreva o que faltou..." style="margin-top: 0.5rem;">
+                        <input type="text" name="unresolved_reason" placeholder="Se respondeu 'Não', descreva o que faltou..." style="margin-top: 0.5rem;">
                     </div>
                 </div>
 
@@ -221,7 +230,7 @@
 
                 <div class="question-group">
                     <label class="main-label">4 - Alguma sugestão para melhorarmos?</label>
-                    <textarea name="sugestoes" rows="4" placeholder="Descreva em poucas palavras..." required></textarea>
+                    <textarea name="suggestions" rows="4" placeholder="Descreva em poucas palavras..." required></textarea>
                 </div>
             </div>
 

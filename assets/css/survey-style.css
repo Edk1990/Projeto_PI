@@ -277,3 +277,21 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================
+   AJUSTES PARA DISPOSITIVOS MÓVEIS (CELULARES)
+   ========================================== */
+@media (max-width: 480px) {
+    /* Diminui o tamanho da fonte geral dos inputs no celular */
+    .form-section input,
+    .form-section select {
+        font-size: 0.9rem;
+        padding: 12px 10px; /* Reduz um pouco o respiro lateral para caber mais texto */
+    }
+
+    /* Diminui especificamente a fonte do texto cinza (placeholder) */
+    .form-section input::placeholder,
+    .form-section textarea::placeholder {
+        font-size: 0.85rem;
+    }
+}
